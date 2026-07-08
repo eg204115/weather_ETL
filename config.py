@@ -2,6 +2,12 @@
 Configuration for the Weather ETL Pipeline.
 """
 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
 # Cities to pull data for: name, latitude, longitude
 CITIES = [
     {"name": "Colombo", "lat": 6.9271, "lon": 79.8612},
@@ -11,11 +17,20 @@ CITIES = [
     {"name": "Sydney", "lat": -33.8688, "lon": 151.2093},
 ]
 
-# Open-Meteo requires no API key
-API_BASE_URL = "https://api.open-meteo.com/v1/forecast"
+# API Configuration
+API_BASE_URL = os.getenv(
+    "API_BASE_URL",
+    "https://api.open-meteo.com/v1/forecast"
+)
 
-# SQLite database file
-DATABASE_PATH = "weather_data.db"
+# PostgreSQL Configuration
+POSTGRES_CONFIG = {
+    "host": os.getenv("POSTGRES_HOST", "localhost"),
+    "port": int(os.getenv("POSTGRES_PORT", 5432)),
+    "dbname": os.getenv("POSTGRES_DB", "weather_etl"),
+    "user": os.getenv("POSTGRES_USER", "postgres"),
+    "password": os.getenv("POSTGRES_PASSWORD", ""),
+}
 
 # Logging
-LOG_FILE = "pipeline.log"
+LOG_FILE = os.getenv("LOG_FILE", "pipeline.log")

@@ -8,7 +8,7 @@ Run with:
 import logging
 import sys
 
-from config import CITIES, DATABASE_PATH, LOG_FILE
+from config import CITIES, POSTGRES_CONFIG, LOG_FILE
 from extract import extract_weather_data
 from transform import transform_data
 from load import load_to_db
@@ -32,7 +32,7 @@ def run_pipeline():
     try:
         raw_data = extract_weather_data(CITIES)
         clean_df = transform_data(raw_data)
-        rows_inserted = load_to_db(clean_df, DATABASE_PATH)
+        rows_inserted = load_to_db(clean_df, POSTGRES_CONFIG)
 
         logger.info(f"=== Pipeline run finished successfully. {rows_inserted} new rows added. ===")
 
